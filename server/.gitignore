@@ -1,6 +1,9 @@
 # ignore private readme files
 readmeprivatePrem.md
 readmeprivateVishal.md
+readmeprivateVishal.md
 
+# ignore environment variables
+config.env
 #ignore environment variables
 config.env
