@@ -37,7 +37,7 @@ if (process.env.NODE_ENV === "development") app.use(morgan("dev"));
 
 app.get("/", (req, res, next) => {
     res.status(200).json({
-        status: "success", message: "Welcome to ClickCompanions server!",
+        status: "success", message: "Welcome to Companions server!",
     });
 });
 
@@ -54,11 +54,19 @@ app.use(express.urlencoded());
 
 require("./config/cloudinary").cloudinaryConnect();
 
+//defining routers
+// todo: routes here
+const userRouter = require("./routes/userRouters.js");
+// const conversationRouter = require("./routes/conversationRouter");
+// const messageRouter = require("./routes/messageRouter");
+app.use("/user", userRouter);
+// app.use("/conversations", conversationRouter);
+// app.use("/message", messageRouter);
 
 //for undefined routs
 const AppError = require("./utils/appError");
 app.all("*", (req, res, next) => {
-    next(new AppError(`Can't find ${req.originalUrl} on ClickCompanions server!`, 404));
+    next(new AppError(`Can't find ${req.originalUrl} on Companions server!`, 404));
 });
 
 //in case of operational error this middleware function will be called to return relevant error message
