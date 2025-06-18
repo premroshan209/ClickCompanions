@@ -108,7 +108,7 @@ exports.buySubscription = catchAsync(async (req, res, next) => {
       price_data: {
         currency: "inr",
         product_data: {
-          name: "Dest Premium Membership",
+          name: "ClickCompanions Premium Membership",
         },
         unit_amount: 599 * 100,
       },

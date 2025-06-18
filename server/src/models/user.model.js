@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: [this.isEmailVerified, "A user must have a username"],
+      required: [true, "A user must have a username"], // Static check
       minLength: [5, "name too short(min=5)!"],
       maxLength: [15, "name too long(max=15)!"],
     },

@@ -128,8 +128,8 @@ exports.authGoogle = catchAsync(async (req, res, next) => {
 
     await sendEmail({
       email: newUser.email,
-      subject: "Welcome to Dest!",
-      message: `Dear ${newUser.name},\nWelcome to Dest. Your Registration is successfull.`,
+      subject: "Welcome to ClickCompanions!",
+      message: `Dear ${newUser.name},\nWelcome to ClickCompanions. Your Registration is successfull.`,
     });
 
   } else {

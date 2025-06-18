@@ -47,7 +47,6 @@ app.get("/test", async (req, res, next) => {
     })
 });
 
-
 // configuration to parse JSON and URL-encoded data.
 app.use(express.json());
 app.use(express.urlencoded());
@@ -59,7 +58,7 @@ require("./config/cloudinary").cloudinaryConnect();
 //for undefined routs
 const AppError = require("./utils/appError");
 app.all("*", (req, res, next) => {
-    next(new AppError(`Can't find ${req.originalUrl} on Dest server!`, 404));
+    next(new AppError(`Can't find ${req.originalUrl} on ClickCompanions server!`, 404));
 });
 
 //in case of operational error this middleware function will be called to return relevant error message
