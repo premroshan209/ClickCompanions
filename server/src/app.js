@@ -58,11 +58,11 @@ require("./config/cloudinary").cloudinaryConnect();
 //defining routers
 // todo: routes here
 const userRouter = require("./routes/userRouters.js");
-// const conversationRouter = require("./routes/conversationRouter");
-// const messageRouter = require("./routes/messageRouter");
+const conversationRouter = require("./routes/conversationRouter");
+const messageRouter = require("./routes/messageRouter");
 app.use("/user", userRouter);
-// app.use("/conversations", conversationRouter);
-// app.use("/message", messageRouter);
+app.use("/conversations", conversationRouter);
+app.use("/message", messageRouter);
 
 //for undefined routs
 const AppError = require("./utils/appError");
@@ -72,7 +72,7 @@ app.all("*", (req, res, next) => {
 
 //in case of operational error this middleware function will be called to return relevant error message
 //To be done later
-// const globalErrorController = require("./controllers/errorController");
-// app.use(globalErrorController);
+const globalErrorController = require("./controllers/errorController");
+app.use(globalErrorController);
 
 module.exports = app;
