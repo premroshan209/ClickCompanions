@@ -1,11 +1,24 @@
-import './App.css'
+
+import { useState } from "react";
+import { Route, Routes } from "react-router-dom";
+
+import "./App.css";
+import Login from "./components/Login";
+import Register from "./components/Register";
+import Home from "./components/Home";
 
 function App() {
+  const [count, setCount] = useState(0);
+
   return (
     <>
-      <p class="text-4xl text-blue-600 font-bold underline">This is the heading</p>
+      <Routes>
+        <Route path="/" element={<Login />}></Route>
+        <Route path="/register" element={<Register />}></Route>
+        <Route path="/home/*" element={<Home />}></Route>
+      </Routes>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
