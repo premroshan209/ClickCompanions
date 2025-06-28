@@ -65,6 +65,7 @@ exports.signup = catchAsync(async (req, res, next) => {
   //a user with dummy required credentials will be created if it is isOAuth
   //the document created will be updated to delete those fields if it is isOAuth
   let newUser = await User.create({
+    name: req.body.name || "Anonymous",
     email: req.body.email,
     phoneNumber: req.body.phoneNumber,
     password: req.body.password,
