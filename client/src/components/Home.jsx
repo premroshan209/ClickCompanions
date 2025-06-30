@@ -61,7 +61,7 @@ const Home = () => {
         className="fixed bottom-4 right-4 bg-pink-500 text-white px-4 py-2 rounded-full lg:hidden"
         onClick={toggleSidebar}
       >
-        {sidebarOpen ? "Close Sidebar" : "Open Sidebar"}Add commentMore actions
+        {sidebarOpen ? "Close Sidebar" : "Open Sidebar"}
       </button>
     </div>
   );

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState, useEffect } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -5,6 +6,23 @@ const UserInfoForm = ({ currentStage, setCurrentStage }) => {
   const [name, setName] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
+=======
+/* eslint-disable react/prop-types */
+import React, { useState, useEffect } from "react";
+import "react-datepicker/dist/react-datepicker.css";
+import { useDispatch } from "react-redux";
+import { logOut } from "../../redux/userSlice";
+
+const UserInfoForm = ({
+  currentStage,
+  setCurrentStage,
+  userData,
+  setUserData,
+}) => {
+  const [name, setName] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const dispatch = useDispatch();
+>>>>>>> prem
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsOpen(true);
@@ -13,12 +31,17 @@ const UserInfoForm = ({ currentStage, setCurrentStage }) => {
     return () => clearTimeout(timer);
   }, []); // Run only once on component mount
 
+<<<<<<< HEAD
   const nextHandler = () => {
+=======
+  const nextHandler = (e) => {
+>>>>>>> prem
     setCurrentStage(currentStage + 1);
   };
 
   return (
     <div
+<<<<<<< HEAD
       className={`fixed top-0 right-0 bottom-0 z-50 bg-black bg-opacity-50 ${
         isOpen ? "w-full" : "w-0"
       } overflow-hidden transition-all duration-500`}
@@ -34,6 +57,25 @@ const UserInfoForm = ({ currentStage, setCurrentStage }) => {
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
+=======
+      className={`fixed top-0 right-0 bottom-0 left-0 z-50 bg-black bg-opacity-50 transition-opacity duration-500 ${
+        isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+      }`}
+    >
+      <div className="flex justify-center min-h-screen bg-pink-50">
+        <div
+          className={`p-4 bg-white mt-10 rounded-lg shadow-md w-full lg:w-1/2 flex flex-col justify-center items-center h-1/3 transition-transform duration-500 ${
+            isOpen ? "translate-x-0" : "translate-x-full"
+          }`}
+        >
+          <h2 className="text-lg font-bold mb-4">What should we call you?</h2>
+          <input
+            type="text"
+            name="name"
+            onChange={(e) =>
+              setUserData({ ...userData, [e.target.name]: e.target.value })
+            }
+>>>>>>> prem
             className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-pink-500 mb-4"
             placeholder="Enter your name"
           />
@@ -57,6 +99,11 @@ const UserInfoForm = ({ currentStage, setCurrentStage }) => {
               />
             </svg>
           </button>
+<<<<<<< HEAD
+=======
+
+          <button onClick={() => dispatch(logOut())}>Logout</button>
+>>>>>>> prem
         </div>
       </div>
     </div>

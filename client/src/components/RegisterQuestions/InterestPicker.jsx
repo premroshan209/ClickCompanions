@@ -1,21 +1,13 @@
 import React, { useState, useEffect } from "react";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import { useNavigate } from "react-router-dom";
 
-<<<<<<< HEAD
-const DateOfBirthPicker = ({ currentStage, setCurrentStage }) => {
-=======
-const DateOfBirthPicker = ({
+const InterestPicker = ({
   currentStage,
   setCurrentStage,
   userData,
   setUserData,
 }) => {
->>>>>>> prem
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedInterest, setSelectedInterest] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -25,22 +17,18 @@ const DateOfBirthPicker = ({
     return () => clearTimeout(timer);
   }, []); // Run only once on component mount
 
+  const handleGenderSelect = (gender) => {
+    setSelectedInterest(gender);
+  };
+
   const nextHandler = () => {
+    setUserData({ ...userData, interestedIn: selectedInterest });
     setCurrentStage(currentStage + 1);
+    // also, add to the object here
   };
 
   return (
     <div
-<<<<<<< HEAD
-      className={`fixed top-0 right-0 bottom-0 z-50 bg-black bg-opacity-50 ${
-        isOpen ? "w-full" : "w-0"
-      } overflow-hidden transition-all duration-500`}
-    >
-      <div className="flex justify-center min-h-screen bg-pink-50">
-        <div
-          className={`p-4 bg-white mt-10 rounded-lg shadow-md w-full lg:w-1/2 flex flex-col justify-center items-center h-1/3 ${
-            isOpen ? "ml-0" : "ml-full"
-=======
       className={`fixed top-0 right-0 bottom-0 left-0 z-50 bg-black bg-opacity-50 transition-opacity duration-500 ${
         isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
       }`}
@@ -49,20 +37,42 @@ const DateOfBirthPicker = ({
         <div
           className={`p-4 bg-white mt-10 rounded-lg shadow-md w-full lg:w-1/2 flex flex-col justify-center items-center h-1/3 transition-transform duration-500 ${
             isOpen ? "translate-x-0" : "translate-x-full"
->>>>>>> prem
           }`}
         >
-          <h2 className="text-lg font-bold mb-4">Date of Birth</h2>
-          <DatePicker
-            selected={selectedDate}
-            onChange={(date) => setSelectedDate(date)}
-            dateFormat="dd/MM/yyyy"
-            placeholderText="Select Date of Birth"
-            className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-pink-500"
-          />
+          <h2 className="text-lg font-bold mb-4">Pick Your Interest</h2>
+          <div className="flex flex-col justify-around w-full mb-4 md:flex-row md:justify-around">
+            <button
+              className={`px-4 py-2 rounded-lg border mb-2 md:mb-0 ${
+                selectedInterest === "Male"
+                  ? "bg-pink-500 text-white"
+                  : "border-gray-300"
+              }`}
+              onClick={() => handleGenderSelect("Male")}
+            >
+              Male
+            </button>
+            <button
+              className={`px-4 py-2 rounded-lg border mb-2 md:mb-0 ${
+                selectedInterest === "Female"
+                  ? "bg-pink-500 text-white"
+                  : "border-gray-300"
+              }`}
+              onClick={() => handleGenderSelect("Female")}
+            >
+              Female
+            </button>
+            <button
+              className={`px-4 py-2 rounded-lg border ${
+                selectedInterest === "Non Binary"
+                  ? "bg-pink-500 text-white"
+                  : "border-gray-300"
+              }`}
+              onClick={() => handleGenderSelect("Non Binary")}
+            >
+              Non Binary
+            </button>
+          </div>
           <button
-<<<<<<< HEAD
-=======
             onClick={() => setCurrentStage(currentStage - 1)}
             className="flex items-center justify-center bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded mt-2"
           >
@@ -83,7 +93,6 @@ const DateOfBirthPicker = ({
             </svg>
           </button>
           <button
->>>>>>> prem
             onClick={nextHandler}
             className="flex items-center justify-center bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded mt-2"
           >
@@ -109,4 +118,4 @@ const DateOfBirthPicker = ({
   );
 };
 
-export default DateOfBirthPicker;
+export default InterestPicker;

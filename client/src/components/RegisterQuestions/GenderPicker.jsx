@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from "react";
 
+<<<<<<< HEAD
 const GenderPicker = ({ currentStage, setCurrentStage }) => {
+=======
+const GenderPicker = ({
+  currentStage,
+  setCurrentStage,
+  userData,
+  setUserData,
+}) => {
+>>>>>>> prem
   const [selectedGender, setSelectedGender] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
@@ -17,12 +26,17 @@ const GenderPicker = ({ currentStage, setCurrentStage }) => {
   };
 
   const nextHandler = () => {
+<<<<<<< HEAD
+=======
+    setUserData({ ...userData, gender: selectedGender });
+>>>>>>> prem
     setCurrentStage(currentStage + 1);
     // also, add to the object here
   };
 
   return (
     <div
+<<<<<<< HEAD
       className={`fixed top-0 right-0 bottom-0 z-50 bg-black bg-opacity-50 ${
         isOpen ? "w-full" : "w-0"
       } overflow-hidden transition-all duration-500`}
@@ -31,6 +45,16 @@ const GenderPicker = ({ currentStage, setCurrentStage }) => {
         <div
           className={`p-4 bg-white mt-10 rounded-lg shadow-md w-full lg:w-1/2 flex flex-col justify-center items-center h-1/3 ${
             isOpen ? "ml-0" : "ml-full"
+=======
+      className={`fixed top-0 right-0 bottom-0 left-0 z-50 bg-black bg-opacity-50 transition-opacity duration-500 ${
+        isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+      }`}
+    >
+      <div className="flex justify-center min-h-screen bg-pink-50">
+        <div
+          className={`p-4 bg-white mt-10 rounded-lg shadow-md w-full lg:w-1/2 flex flex-col justify-center items-center h-1/3 transition-transform duration-500 ${
+            isOpen ? "translate-x-0" : "translate-x-full"
+>>>>>>> prem
           }`}
         >
           <h2 className="text-lg font-bold mb-4">Select Gender</h2>
@@ -57,6 +81,7 @@ const GenderPicker = ({ currentStage, setCurrentStage }) => {
             </button>
             <button
               className={`px-4 py-2 rounded-lg border ${
+<<<<<<< HEAD
                 selectedGender === "Other"
                   ? "bg-pink-500 text-white"
                   : "border-gray-300"
@@ -67,6 +92,38 @@ const GenderPicker = ({ currentStage, setCurrentStage }) => {
             </button>
           </div>
           <button
+=======
+                selectedGender === "Non Binary"
+                  ? "bg-pink-500 text-white"
+                  : "border-gray-300"
+              }`}
+              onClick={() => handleGenderSelect("Non Binary")}
+            >
+              Non Binary
+            </button>
+          </div>
+          <button
+            onClick={() => setCurrentStage(currentStage - 1)}
+            className="flex items-center justify-center bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded mt-2"
+          >
+            Back
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6 ml-2"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </button>
+          <button
+>>>>>>> prem
             onClick={nextHandler}
             className="flex items-center justify-center bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded mt-2"
           >

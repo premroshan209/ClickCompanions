@@ -1,24 +1,44 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import registerImage from "../assets/register.svg";
 import { useNavigate } from "react-router-dom";
+<<<<<<< HEAD
 import DateOfBirthPicker from "./RegisterQuestions/DateOfBirthPicker";
 import NameQuestion from "./RegisterQuestions/NameQuestion";
 import GenderPicker from "./RegisterQuestions/GenderPicker";
 import NecessaryQuestions from "./NecessaryQuestions";
 import "react-datepicker/dist/react-datepicker.css";
+=======
+import { useDispatch, useSelector} from "react-redux";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { googleAuthInitiator } from "../utils/googleOAuth";
+import OtpSection from "./OtpSection";
+import { signup } from "../redux/apiCalls/apiCalls";
+>>>>>>> prem
 
 function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+<<<<<<< HEAD
   const [imageLoaded, setImageLoaded] = useState(false);
   const [verified, setVerified] = useState(true);
   const [signUpStage, setSignUpStage] = useState(1);
+=======
+  const [verifyPassword, setVerifyPassword] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [registered, setRegistered] = useState(false);
+>>>>>>> prem
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
+  const currentUser = useSelector(
+    (state) => state?.user?.currentUser?.data?.user
+  );
   useEffect(() => {
     // Once the component mounts or email/password changes, set imageLoaded to true to trigger the fade-in effect
     setImageLoaded(true);
   }, [email, password]);
+<<<<<<< HEAD
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -36,11 +56,62 @@ function Register() {
     // Reset form fields
     setEmail("");
     setPassword("");
+=======
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
   };
+  const handlePhoneChnage = (e) => {
+    setPhoneNumber(e.target.value);
+>>>>>>> prem
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
+
+  const handleVerifyPasswordChange = (e) => {
+    setVerifyPassword(e.target.value);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (password !== verifyPassword) {
+      // alert("Passwords do not match");
+      toast.error("Passwords do not match");
+      return;
+    }
+    // Handle registration logic here
+    console.log("Email:", email);
+    console.log("Password:", password);
+    signup(dispatch, setRegistered, {
+      email: email,
+      password: password,
+      passwordConfirm: verifyPassword,
+      phoneNumber: phoneNumber,
+    });
+    // setRegistered(true);
+  };
+
+  useEffect(() => {
+    if (currentUser) {
+      if (currentUser.isSignupCompleted) {
+        console.log("./home");
+        navigate("/home");
+      } else {
+        console.log("./questions");
+        navigate("/questions");
+      }
+    }
+  }, [currentUser, navigate]);
 
   return (
     <div>
+<<<<<<< HEAD
       {!verified && (
+=======
+      {!registered && (
+>>>>>>> prem
         <div className="flex h-screen justify-center items-center bg-pink-100">
           <div className="max-w-xl w-full flex justify-between items-center">
             {/* Left side: Image */}
@@ -59,6 +130,7 @@ function Register() {
               />
             </div>
 
+<<<<<<< HEAD
             {/* Right side: Login form */}
             <form
               onSubmit={handleSubmit}
@@ -140,6 +212,121 @@ function Register() {
         </div>
       )}
       {verified && <NecessaryQuestions />}
+=======
+            {/* Right side: Registration form */}
+            <div className="bg-white  rounded-lg shadow-md w-full lg:w-4/5">
+              <form
+                onSubmit={handleSubmit}
+                className="bg-white p-10 rounded-lg w-full lg:w-full"
+              >
+                <h2 className="text-3xl mb-4 text-center font-bold">
+                  Hey there👋
+                </h2>
+                <div className="mb-4">
+                  <label
+                    htmlFor="email"
+                    className="block text-gray-700 font-bold mb-2"
+                  >
+                    Email Address
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    value={email}
+                    onChange={handleEmailChange}
+                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-pink-500"
+                    placeholder="Enter your email"
+                    required
+                  />
+                </div>
+                <div className="mb-4">
+                  <label
+                    htmlFor="phone"
+                    className="block text-gray-700 font-bold mb-2"
+                  >
+                    Phone Number
+                  </label>
+                  <input
+                    type="number"
+                    id="phone"
+                    value={phoneNumber}
+                    onChange={handlePhoneChnage}
+                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-pink-500"
+                    placeholder="Enter your phone number"
+                    required
+                  />
+                </div>
+                <div className="mb-6">
+                  <label
+                    htmlFor="password"
+                    className="block text-gray-700 font-bold mb-2"
+                  >
+                    Password
+                  </label>
+                  <input
+                    type="password"
+                    id="password"
+                    value={password}
+                    onChange={handlePasswordChange}
+                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-pink-500"
+                    placeholder="Enter your password"
+                    required
+                  />
+                </div>
+                <div className="mb-6">
+                  <label
+                    htmlFor="verifyPassword"
+                    className="block text-gray-700 font-bold mb-2"
+                  >
+                    Confirm Password
+                  </label>
+                  <input
+                    type="password"
+                    id="verifyPassword"
+                    value={verifyPassword}
+                    onChange={handleVerifyPasswordChange}
+                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-pink-500"
+                    placeholder="Confirm your password"
+                    required
+                  />
+                </div>
+                <div
+                  onClick={() => {
+                    navigate("/");
+                  }}
+                  className="mb-2 text-center cursor-pointer text-blue-500"
+                >
+                  Already registered? Click here to sign in
+                </div>
+                <button
+                  type="submit"
+                  className="w-full bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-4"
+                >
+                  Register
+                </button>
+                <button
+                  className="w-full bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-4"
+                  onClick={(e) => {
+                    googleAuthInitiator(e);
+                  }}
+                >
+                  Google Sign in
+                </button>
+              </form>
+              {/* Google Sign-In Button */}
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Render component after registration */}
+      {registered && (
+        <OtpSection
+          user={{
+            email: email,
+          }}
+        />
+      )}
+>>>>>>> prem
     </div>
   );
 }
