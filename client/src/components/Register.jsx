@@ -1,113 +1,145 @@
 import React, { useState, useEffect } from "react";
 import registerImage from "../assets/register.svg";
 import { useNavigate } from "react-router-dom";
+import DateOfBirthPicker from "./RegisterQuestions/DateOfBirthPicker";
+import NameQuestion from "./RegisterQuestions/NameQuestion";
+import GenderPicker from "./RegisterQuestions/GenderPicker";
+import NecessaryQuestions from "./NecessaryQuestions";
+import "react-datepicker/dist/react-datepicker.css";
 
 function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [verified, setVerified] = useState(true);
+  const [signUpStage, setSignUpStage] = useState(1);
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Once the component mounts or email/password changes, set imageLoaded to true to trigger the fade-in effect
     setImageLoaded(true);
-  }, []);
+  }, [email, password]);
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // Handle login logic here
     console.log("Email:", email);
     console.log("Password:", password);
+    // Reset form fields
     setEmail("");
     setPassword("");
-    setConfirmPassword("");
   };
 
   return (
-    <div className="flex h-screen items-center justify-center bg-gradient-to-br from-indigo-100 to-purple-200">
-      <div className="max-w-4xl w-full flex flex-col lg:flex-row items-center justify-between gap-8 p-6">
-        {/* Image section */}
-        <div
-          className={`hidden lg:block transition-opacity duration-1000 ${
-            imageLoaded ? "opacity-100" : "opacity-0"
-          }`}
-        >
-          <img
-            src={registerImage}
-            alt="Register"
-            className="h-80 w-80 object-contain"
-            onLoad={() => setImageLoaded(true)}
-          />
-        </div>
-
-        {/* Form section */}
-        <form
-          onSubmit={handleSubmit}
-          className="w-full lg:w-1/2 bg-white bg-opacity-80 backdrop-blur-sm p-8 rounded-2xl shadow-lg"
-        >
-          <h2 className="text-4xl font-extrabold text-center text-indigo-600 mb-6">
-            Create Account
-          </h2>
-
-          <div className="mb-4">
-            <label className="block text-gray-700 font-semibold mb-1">
-              Email Address
-            </label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
-              placeholder="you@example.com"
-              required
-            />
-          </div>
-
-          <div className="mb-4">
-            <label className="block text-gray-700 font-semibold mb-1">
-              Password
-            </label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
-              placeholder="••••••••"
-              required
-            />
-          </div>
-
-          <div className="mb-6">
-            <label className="block text-gray-700 font-semibold mb-1">
-              Confirm Password
-            </label>
-            <input
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
-              placeholder="••••••••"
-              required
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 shadow-md"
-          >
-            Register
-          </button>
-
-          <p className="text-center text-sm mt-4 text-gray-600">
-            Already registered?{" "}
-            <span
-              onClick={() => navigate("/")}
-              className="text-indigo-600 hover:underline cursor-pointer"
+    <div>
+      {!verified && (
+        <div className="flex h-screen justify-center items-center bg-pink-100">
+          <div className="max-w-xl w-full flex justify-between items-center">
+            {/* Left side: Image */}
+            <div
+              className={`hidden lg:block w-4/5 ${
+                imageLoaded
+                  ? "opacity-100 transition-opacity duration-1000"
+                  : "opacity-0"
+              }`}
             >
-              Click here to login
-            </span>
-          </p>
-        </form>
-      </div>
+              <img
+                src={registerImage}
+                alt="Love"
+                className="h-80 w-80"
+                onLoad={() => setImageLoaded(true)}
+              />
+            </div>
+
+            {/* Right side: Login form */}
+            <form
+              onSubmit={handleSubmit}
+              className="bg-white p-10 rounded-lg shadow-md w-full lg:w-4/5"
+
+
+
+
+            >
+              <h2 className="text-3xl mb-4 text-center font-bold">
+                Hey there👋
+              </h2>
+              <div className="mb-4">
+                <label
+                  htmlFor="email"
+                  className="block text-gray-700 font-bold mb-2"
+                >
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  value={email}
+                  onChange={handleEmailChange}
+                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-pink-500"
+                  placeholder="Enter your email"
+                  required
+                />
+              </div>
+              <div className="mb-6">
+                <label
+                  htmlFor="password"
+                  className="block text-gray-700 font-bold mb-2"
+                >
+                  Password
+                </label>
+                <input
+                  type="password"
+                  id="password"
+                  value={password}
+                  onChange={handlePasswordChange}
+                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-pink-500"
+                  placeholder="Enter your password"
+                  required
+                />
+              </div>
+              <div className="mb-6">
+                <label
+                  htmlFor="password"
+                  className="block text-gray-700 font-bold mb-2"
+                >
+                  Confirm Password
+                </label>
+                <input
+                  type="password"
+                  id="password"
+                  value={password}
+                  onChange={handlePasswordChange}
+                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-pink-500"
+                  placeholder="Enter your password"
+                  required
+                />
+              </div>
+              <div
+                onClick={() => {
+                  navigate("/");
+                }}
+              >
+                already registered? click here
+              </div>
+              <button
+                type="submit"
+                className="w-full bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              >
+                Register
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+      {verified && <NecessaryQuestions />}
     </div>
   );
 }
