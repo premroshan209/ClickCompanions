@@ -10,8 +10,8 @@ import { logOut } from "../redux/userSlice";
 
 const Home = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
   const dispatch = useDispatch();
+
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
   };
@@ -52,9 +52,16 @@ const Home = () => {
 
       {/* Center Section */}
       <div className="lg:col-span-6">
+        {/* ✅ Moved button outside <Routes> */}
+        <button
+          onClick={() => dispatch(logOut())}
+          className="m-4 px-4 py-2 bg-red-500 text-white rounded"
+        >
+          Logout
+        </button>
+
         <Routes>
           <Route path="/" element={<Center />} />
-          <button onClick={() => dispatch(logOut())}>logout</button>
           <Route path="/chats" element={<ChatSection />} />
         </Routes>
       </div>
