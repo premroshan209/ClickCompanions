@@ -1,34 +1,20 @@
-import { useState, useEffect } from "react";
-import registerImage from "../assets/register.svg";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-<<<<<<< HEAD
-import DateOfBirthPicker from "./RegisterQuestions/DateOfBirthPicker";
-import NameQuestion from "./RegisterQuestions/NameQuestion";
-import GenderPicker from "./RegisterQuestions/GenderPicker";
-import NecessaryQuestions from "./NecessaryQuestions";
-import "react-datepicker/dist/react-datepicker.css";
-=======
-import { useDispatch, useSelector} from "react-redux";
-import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
 import "react-toastify/dist/ReactToastify.css";
 import { googleAuthInitiator } from "../utils/googleOAuth";
 import OtpSection from "./OtpSection";
 import { signup } from "../redux/apiCalls/apiCalls";
->>>>>>> prem
+import PasswordInput from "./utilComponents/passwordInput.jsx";
+import sideImage from "../assets/frontPageImage.png";
 
 function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-<<<<<<< HEAD
-  const [imageLoaded, setImageLoaded] = useState(false);
-  const [verified, setVerified] = useState(true);
-  const [signUpStage, setSignUpStage] = useState(1);
-=======
   const [verifyPassword, setVerifyPassword] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState();
   const [imageLoaded, setImageLoaded] = useState(false);
   const [registered, setRegistered] = useState(false);
->>>>>>> prem
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const currentUser = useSelector(
@@ -38,32 +24,12 @@ function Register() {
     // Once the component mounts or email/password changes, set imageLoaded to true to trigger the fade-in effect
     setImageLoaded(true);
   }, [email, password]);
-<<<<<<< HEAD
-
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Handle login logic here
-    console.log("Email:", email);
-    console.log("Password:", password);
-    // Reset form fields
-    setEmail("");
-    setPassword("");
-=======
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   };
   const handlePhoneChnage = (e) => {
     setPhoneNumber(e.target.value);
->>>>>>> prem
   };
 
   const handlePasswordChange = (e) => {
@@ -76,15 +42,16 @@ function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (password !== verifyPassword) {
-      // alert("Passwords do not match");
-      toast.error("Passwords do not match");
-      return;
-    }
+    //get this from backend
+    // if (password !== verifyPassword) {
+    //   // alert("Passwords do not match");
+    //   toast.error("Passwords do not match");
+    //   return;
+    // }
     // Handle registration logic here
-    console.log("Email:", email);
-    console.log("Password:", password);
-    signup(dispatch, setRegistered, {
+    // console.log("Email:", email);
+    // console.log("Password:", password);
+    await signup(dispatch, setRegistered, {
       email: email,
       password: password,
       passwordConfirm: verifyPassword,
@@ -107,114 +74,31 @@ function Register() {
 
   return (
     <div>
-<<<<<<< HEAD
-      {!verified && (
-=======
       {!registered && (
->>>>>>> prem
-        <div className="flex h-screen justify-center items-center bg-pink-100">
-          <div className="max-w-xl w-full flex justify-between items-center">
+        <div className="flex h-screen justify-center items-center bg-rose-50">
+          <div
+            className="flex justify-evenly
+       items-center w-full gap-10 align-middle h-full"
+          >
             {/* Left side: Image */}
+
             <div
-              className={`hidden lg:block w-4/5 ${
+              className={`w-[40%] sm:flex p-4 bg-white shadow-md border rounded-lg hidden items-center justify-center overflow-hidden h-full ${
                 imageLoaded
                   ? "opacity-100 transition-opacity duration-1000"
                   : "opacity-0"
               }`}
             >
               <img
-                src={registerImage}
+                src={sideImage}
                 alt="Love"
-                className="h-80 w-80"
+                // className="h-[100%]"
                 onLoad={() => setImageLoaded(true)}
               />
             </div>
 
-<<<<<<< HEAD
-            {/* Right side: Login form */}
-            <form
-              onSubmit={handleSubmit}
-              className="bg-white p-10 rounded-lg shadow-md w-full lg:w-4/5"
-
-
-
-
-            >
-              <h2 className="text-3xl mb-4 text-center font-bold">
-                Hey there👋
-              </h2>
-              <div className="mb-4">
-                <label
-                  htmlFor="email"
-                  className="block text-gray-700 font-bold mb-2"
-                >
-                  Email Address
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  value={email}
-                  onChange={handleEmailChange}
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-pink-500"
-                  placeholder="Enter your email"
-                  required
-                />
-              </div>
-              <div className="mb-6">
-                <label
-                  htmlFor="password"
-                  className="block text-gray-700 font-bold mb-2"
-                >
-                  Password
-                </label>
-                <input
-                  type="password"
-                  id="password"
-                  value={password}
-                  onChange={handlePasswordChange}
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-pink-500"
-                  placeholder="Enter your password"
-                  required
-                />
-              </div>
-              <div className="mb-6">
-                <label
-                  htmlFor="password"
-                  className="block text-gray-700 font-bold mb-2"
-                >
-                  Confirm Password
-                </label>
-                <input
-                  type="password"
-                  id="password"
-                  value={password}
-                  onChange={handlePasswordChange}
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-pink-500"
-                  placeholder="Enter your password"
-                  required
-                />
-              </div>
-              <div
-                onClick={() => {
-                  navigate("/");
-                }}
-              >
-                already registered? click here
-              </div>
-              <button
-                type="submit"
-                className="w-full bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              >
-                Register
-              </button>
-            </form>
-          </div>
-        </div>
-      )}
-      {verified && <NecessaryQuestions />}
-=======
             {/* Right side: Registration form */}
-            <div className="bg-white  rounded-lg shadow-md w-full lg:w-4/5">
+            <div className="bg-white rounded-lg shadow-md lg:w-[30%] sm:w-fit p-10">
               <form
                 onSubmit={handleSubmit}
                 className="bg-white p-10 rounded-lg w-full lg:w-full"
@@ -234,7 +118,7 @@ function Register() {
                     id="email"
                     value={email}
                     onChange={handleEmailChange}
-                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-pink-500"
+                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-rose-500"
                     placeholder="Enter your email"
                     required
                   />
@@ -251,7 +135,7 @@ function Register() {
                     id="phone"
                     value={phoneNumber}
                     onChange={handlePhoneChnage}
-                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-pink-500"
+                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-rose-500"
                     placeholder="Enter your phone number"
                     required
                   />
@@ -263,12 +147,12 @@ function Register() {
                   >
                     Password
                   </label>
-                  <input
+                  <PasswordInput
                     type="password"
                     id="password"
                     value={password}
                     onChange={handlePasswordChange}
-                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-pink-500"
+                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-rose-500"
                     placeholder="Enter your password"
                     required
                   />
@@ -280,12 +164,12 @@ function Register() {
                   >
                     Confirm Password
                   </label>
-                  <input
+                  <PasswordInput
                     type="password"
                     id="verifyPassword"
                     value={verifyPassword}
                     onChange={handleVerifyPasswordChange}
-                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-pink-500"
+                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-rose-500"
                     placeholder="Confirm your password"
                     required
                   />
@@ -300,7 +184,7 @@ function Register() {
                 </div>
                 <button
                   type="submit"
-                  className="w-full bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-4"
+                  className="w-full bg-rose-500 hover:bg-rose-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-4"
                 >
                   Register
                 </button>
@@ -320,13 +204,15 @@ function Register() {
       )}
       {/* Render component after registration */}
       {registered && (
-        <OtpSection
-          user={{
-            email: email,
-          }}
-        />
+        <div>
+          <OtpSection
+            user={{
+              email: email,
+            }}
+            back={() => setRegistered(false)}
+          />
+        </div>
       )}
->>>>>>> prem
     </div>
   );
 }
