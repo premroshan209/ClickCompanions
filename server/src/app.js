@@ -10,7 +10,8 @@ const cookieParser = require("cookie-parser");
 app.use(helmet());
 
 app.use(cors({
-    origin: process.env.CORS_ORIGIN, credentials: true,
+    origin: ["http://localhost:3000"],
+    credentials: true,
 }));
 
 // read data from the body into req.body, max is 10kb.
@@ -43,7 +44,7 @@ app.get("/", (req, res, next) => {
 
 app.get("/test", async (req, res, next) => {
     res.status(200).json({
-        status: "success", message: "this is for testing functions",
+        status: "success", message: "Welcome to Companions server!",
     })
 });
 

@@ -5,7 +5,7 @@ import "./index.css";
 import { BrowserRouter } from "react-router-dom";
 
 // redux imports
-import { Provider } from "react-redux"; //redux state providerMore actions
+import { Provider } from "react-redux"; //redux state provider
 import { store, persistor } from "./redux/store.js"; //persistor to keep data in local storage
 import { PersistGate } from "redux-persist/integration/react"; //persistgate to implement persistor
 

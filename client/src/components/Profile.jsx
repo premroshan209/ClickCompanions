@@ -12,7 +12,7 @@ const Profile = () => {
 
   const fileUpload = (e) => {
     e.preventDefault();
-    file && uploadFile(e, file, "enlightasp@gmail.com", setImageUrl);
+    file && uploadFile(e, file, "clickcompanions@gmail.com", setImageUrl);
   };
 
   // This component allows users to upload and delete files, displaying the uploaded file's URL.
