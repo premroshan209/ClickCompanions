@@ -1,8 +1,6 @@
 // Importing functions from firebase
 import { initializeApp } from "firebase/app";
 
-// It configures and initializes Firebase services (Authentication, Firestore, Storage, etc.) for your app.
-// Firebase requires this setup before you can use any of its features (like file uploads in your Profile component).
 // Firebase configuration
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_API_KEY,
