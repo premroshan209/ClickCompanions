@@ -11,10 +11,6 @@ node_modules
 dist
 dist-ssr
 *.local
-<<<<<<< HEAD
-=======
-/.env
->>>>>>> d3582c4aaa7a65508673adce5327cd4ea2c6e8ee
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

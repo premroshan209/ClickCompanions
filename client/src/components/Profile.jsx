@@ -12,18 +12,12 @@ const Profile = () => {
 
   const fileUpload = (e) => {
     e.preventDefault();
-<<<<<<< HEAD
     file && uploadFile(e, file, "clickcompanions@gmail.com", setImageUrl);
   };
 
   // This component allows users to upload and delete files, displaying the uploaded file's URL.
   // It uses the `uploadFile` and `deleteFile` utility functions to handle file operations
   // and maintains the state of the uploaded file and its URL.
-=======
-    file && uploadFile(e, file, "asdasd werwer tt", setImageUrl);
-  };
-
->>>>>>> d3582c4aaa7a65508673adce5327cd4ea2c6e8ee
   return (
     <form>
       <label htmlFor="image">
