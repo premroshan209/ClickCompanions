@@ -28,6 +28,7 @@ exports.updateUserDetails = catchAsync(async (req, res, next) => {
     name: req.body.name || user.name,
     height: req.body.height || user.height,
     gender: req.body.gender || user.gender,
+    interestedInGender: req.body.interestedInGender || user.interestedInGender,
     isSignupCompleted: req.body.isSignupCompleted || true,
     fieldsOfInterests: req.body.fieldsOfInterests || user.fieldsOfInterests,
     bio: req.body.bio || user.bio,
@@ -184,6 +185,142 @@ exports.validateSubscription = catchAsync(async (req, res, next) => {
     status: "success",
     data: {
       paymentStatus: session.payment_status,
+      user,
+    },
+  });
+});
+
+//coding platform data extraction
+//function to make graphQl request for leetcode graphql
+async function getLeetcodeGraphqlResponse(query, variables) {
+  let data = JSON.stringify({
+    query: query,
+    variables: variables,
+  });
+
+  let config = {
+    method: "post",
+    url: "https://leetcode.com/graphql/",
+    headers: { "Content-Type": "application/json" },
+    data: data,
+  };
+
+  return axios(config);
+}
+
+//function to fetch leetcode details
+exports.fetchLeetcodeData = catchAsync(async (req, res, next) => {
+  let user = req.user;
+  const username =
+    req.body.leetcodeUsername || user.leetcodeData.leetcodeUsername;
+
+  if (!username) {
+    return next(new AppError("Dont have leetcode username.", 400));
+  }
+
+  //fetch if there is a new username
+  //fetch if last fetch was 5 hours ago or more
+  if (
+    username === user.leetcodeData.leetcodeUsername &&
+    user.leetcodeData?.updatedAt &&
+    Math.abs(new Date() - user.leetcodeData.updatedAt) < 5 * 60 * 60 * 1000
+  ) {
+    res.status(425).json({
+      status: "success",
+      message: "Data was recently updated. Try again later.",
+      data: {
+        user: user,
+      },
+    });
+    return;
+  }
+
+  let query = `
+        query userPublicProfile($username: String!, $year: Int ) {
+          matchedUser(username: $username) {
+            profile {
+              ranking
+              userAvatar
+            }
+            submitStatsGlobal {
+                acSubmissionNum {
+                    difficulty
+                    count
+                }
+            }
+            userCalendar(year: $year) {
+              streak
+            }
+            languageProblemCount {
+              languageName
+            }
+          }
+        }
+    `;
+  let response = await getLeetcodeGraphqlResponse(query, { username });
+
+  console.log(response.data);
+
+  if (!response.data.data.matchedUser) {
+    res.status(400).json({
+      status: "fail",
+      message: "No such user found on leetcode!",
+    });
+  }
+
+  const rank = response.data.data.matchedUser?.profile?.ranking || 0;
+  const streak = response.data.data.matchedUser?.userCalendar?.streak || 0;
+  let languagesUsed =
+    response.data.data.matchedUser?.languageProblemCount?.map(
+      (language) => language.languageName
+    ) || [];
+  const submissionCount =
+    response.data.data.matchedUser?.submitStatsGlobal?.acSubmissionNum || [];
+
+  user.rank = rank;
+  user.leetcodeData = {
+    leetcodeUsername: username,
+    updatedAt: new Date(),
+    streak: streak,
+    submissionCount: submissionCount,
+  };
+
+  languagesUsed = languagesUsed.filter(
+    (l) => !user.codingLanguage?.includes(l)
+  );
+  user.codingLanguage = [...user.codingLanguage, ...languagesUsed];
+
+  let year = new Date().getFullYear();
+  query = `
+    query userProfileCalendar($username: String!, $year: Int) {
+      matchedUser(username: $username) {
+        userCalendar(year: $year) {
+          submissionCalendar
+        }
+      }
+    }
+    `;
+
+  response = await getLeetcodeGraphqlResponse(query, { username, year });
+  if (!response.data.data.matchedUser) {
+    res.status(400).json({
+      status: "fail",
+      message: response.data.errors[0].message,
+    });
+    return;
+  }
+
+  user.leetcodeData.heatmap =
+    JSON.parse(
+      response.data.data?.matchedUser?.userCalendar?.submissionCalendar
+    ) || [];
+
+  user = await user.save({ validateBeforeSave: false, new: true });
+
+
+  res.status(200).json({
+    status: "success",
+    data: {
       user,
     },
   });
