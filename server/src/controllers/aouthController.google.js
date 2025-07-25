@@ -28,6 +28,25 @@ const createSendToken = async (user, status, res, req, redirect) => {
   };
   res.cookie("jwt", token, options);
 
+  //updating leetcode data upon login
+  const updatingUrl = `${req.protocol}://${req.get("host")}/user/fetchLeetcodeData`;
+  console.log("Ahhhhhhhhhhh", updatingUrl);
+  let response;
+  try {
+    response = await axios.create({ withCredentials: true }).post(updatingUrl, req.body, {
+      headers: {
+        Cookie: "jwt=" + token,
+      },
+    });
+
+    if (response.status === 200) {
+      user = response.data.data.user;
+    }
+  } catch (e) {
+    console.log("crap");
+    //pass
+  }
+
   if (redirect) {
     console.log("sent redirect ", redirect);
     return res.redirect(redirect);
@@ -106,7 +125,7 @@ exports.authGoogle = catchAsync(async (req, res, next) => {
   } catch (e) {
     console.log("Google API ERRORED! 😐😐😐😐😐");
     console.log(e);
-    return res.redirect(UI_ROOT_URI + "/");
+    return res.redirect(UI_ROOT_URI / " ");
   }
 
   const email = googleUser.data.email;
@@ -118,7 +137,9 @@ exports.authGoogle = catchAsync(async (req, res, next) => {
     newUser = await User.create({
       email: email,
       isOAuth: true,
-      isEmailVerified: true, //as we are getting email from google, we can assume it is verified
+      phoneNumber: Math.floor(new Date().getTime()),
+      password: "duck123!@#",
+      passwordConfirm: "duck123!@#",
     });
 
 
@@ -128,8 +149,8 @@ exports.authGoogle = catchAsync(async (req, res, next) => {
 
     await sendEmail({
       email: newUser.email,
-      subject: "Welcome to Companions!",
-      message: `Dear ${newUser.name},\nWelcome to Companions. Your Registration is successfull.`,
+      subject: "Welcome to ClickCompanions!",
+      message: `Dear ${newUser.name},\nWelcome to ClickCompanions. Your Registration is successfull.`,
     });
 
   } else {

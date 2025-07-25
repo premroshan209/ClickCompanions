@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, "A user must have a username"], // Static check
+      required: [this.isEmailVerified, "A user must have a username"],
       minLength: [5, "name too short(min=5)!"],
       maxLength: [15, "name too long(max=15)!"],
     },
@@ -44,6 +44,14 @@ const userSchema = new mongoose.Schema(
       max: 275,
     },
     gender: {
+      type: String,
+      enum: {
+        values: ["Male", "Female", "NonBinary"],
+        message: "Invalid gender",
+      },
+      required: this.isEmailVerified,
+    },
+    interestedInGender: {
       type: String,
       enum: {
         values: ["Male", "Female", "NonBinary"],
@@ -123,6 +131,16 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    rank: {
+      type: Number, //todo: unique ??
+    },
+    leetcodeData: {
+      leetcodeUsername: String,
+      updatedAt: Date,
+      streak: Number,
+      submissionCount: {},
+      heatmap: mongoose.Schema.Types.Mixed,
+    },
     isOAuth: {
       type: Boolean,
       default: false,
@@ -148,8 +166,8 @@ const userSchema = new mongoose.Schema(
       },
     ],
     bio: String,
-    artProfile: [{ type: String }],
     fieldsOfInterests: [{ type: String }],
+    codingLanguage: [{ type: String }],
   },
   {
     timestamps: true,

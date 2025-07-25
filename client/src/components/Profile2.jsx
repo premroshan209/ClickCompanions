@@ -16,7 +16,7 @@ const ProfilePage = () => {
   const [interestedIn, setInterestedIn] = useState("Female");
   const [leetCode, setLeetCode] = useState("");
   const [openUploadPhotos, setOpenUploadPhotos] = useState(false);
-  const [bio, setBio] = useState("Hey there! I am using dest");
+  const [bio, setBio] = useState("Hey there! I am using ClickCompanions");
   const [fadeIn, setFadeIn] = useState(false);
 
   function formatDate(date) {
