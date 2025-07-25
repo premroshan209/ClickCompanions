@@ -11,6 +11,16 @@ const getRecommendations = async (req, res) => {
         .json({ success: false, message: "User not found." });
     }
 
+    // // Adjusted height preferences
+    // const minHeight =
+    //   user.preferences.minHeight !== null
+    //     ? user.preferences.minHeight
+    //     : user.height - 5;
+    // const maxHeight =
+    //   user.preferences.maxHeight !== null
+    //     ? user.preferences.maxHeight
+    //     : user.height + 5;
+
     // Fetch potential matches based on criteria, excluding liked, rejected, and matched users
     const potentialMatches = await User.find({
       _id: { $ne: user._id },
@@ -19,6 +29,7 @@ const getRecommendations = async (req, res) => {
       _id: {
         $nin: [...user.likedArray, ...user.rejectedArray, ...user.matchedArray],
       }, // Exclude liked, rejected, and matched users
+      height: { $gte: user.height - 40, $lte: user.height + 40 },
     });
 
     // Calculate similarity score for each potential match using cosine similarity

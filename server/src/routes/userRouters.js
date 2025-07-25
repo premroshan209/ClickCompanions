@@ -12,13 +12,18 @@ router.get("/test", (req, res, next) => {
   });
 });
 
-router.post("/login", authController.login); 
-router.post("/logout", authController.logout); 
-router.get("/getMe", authController.isLoggedIn); 
-router.post("/signup", authController.signup); 
-router.post("/verifyEmail", authController.verifyEmail); 
+router.post("/login", authController.login); //ok
+router.post("/logout", authController.logout); //ok
+router.get("/getMe", authController.isLoggedIn); //ok
+router.post("/signup", authController.signup); //ok
+router.post("/verifyEmail", authController.verifyEmail); //ok
+router.post(
+  "/fetchLeetcodeData",
+  authController.protect,
+  userController.fetchLeetcodeData
+);
 
-//for google oauth 
+//for google oauth
 router.get("/auth/google/url", oauthGoogleController.getGoogleUrl);
 router.get("/auth/google/", oauthGoogleController.authGoogle);
 
@@ -51,7 +56,7 @@ router.post(
   userController.addPhotoLink
 );
 router.post(
-  "/deletePhotoLink", 
+  "/deletePhotoLink",
   authController.protect,
   userController.deletePhotoLink
 );
