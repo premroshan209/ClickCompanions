@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-import { BACKEND_URL } from "../../config";
+// import { BACKEND_URL } from "../../config";
 import ImageCropperModal from "../Modals/ImageCropperModal";
 
 import { deleteFile, uploadFile } from "../../utils/mediaHandlers";
