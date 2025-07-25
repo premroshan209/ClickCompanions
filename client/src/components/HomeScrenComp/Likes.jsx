@@ -1,4 +1,5 @@
 import React from "react";
+
 const Likes = () => {
   // Dummy liked user data
   const likedUsers = [
