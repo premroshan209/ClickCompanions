@@ -1,6 +1,6 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import userReducer from "./userSlice";
-// import profileReducer from "./profileSlice";
+import profileReducer from "./profileSlice";
 import {
   persistStore,
   persistReducer,
@@ -22,7 +22,7 @@ const persistConfig = {
 // Combine reducers into root reducer
 const rootReducer = combineReducers({
   user: userReducer,
-  // profile: profileReducer,
+  profile: profileReducer,
   conversations: conversationSlice,
 });
 
