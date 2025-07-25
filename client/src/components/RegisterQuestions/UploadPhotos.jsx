@@ -1,17 +1,37 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+
+import { BACKEND_URL } from "../../config";
+import ImageCropperModal from "../Modals/ImageCropperModal";
+
 import { deleteFile, uploadFile } from "../../utils/mediaHandlers";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addSinglePhoto,
   deleteSinglePhoto,
+  profileComplete,
 } from "../../redux/apiCalls/apiCalls";
+import { toast } from "react-toastify";
+import { IoIosArrowBack } from "react-icons/io";
+import { RxCross2 } from "react-icons/rx";
 
-const UploadPhotos = () => {
+const UploadPhotos = ({
+  currentStage,
+  setCurrentStage,
+  userData,
+  setUserData,
+  openUploadPhotos,
+  setOpenUploadPhotos,
+}) => {
   const [photos, setPhotos] = useState(Array(6).fill(null));
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentPhoto, setCurrentPhoto] = useState(null);
+
   const [currentImg, setCurrentImg] = useState("");
   const [currentInd, setCurrentInd] = useState("");
   const [photoToDelete, setPhotoToDelete] = useState("");
+
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const currentUser = useSelector(
@@ -19,7 +39,7 @@ const UploadPhotos = () => {
   );
   const completeUser = useSelector((state) => state?.user?.currentUser);
   const dispatch = useDispatch();
-
+  const path = useLocation().pathname.split("/")[1];
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsOpen(true);
@@ -30,6 +50,8 @@ const UploadPhotos = () => {
 
   const handlePhotoUpload = async (e, index) => {
     const selectedPhoto = e.target.files[0];
+    setCurrentPhoto(selectedPhoto);
+    setIsModalOpen(true);
     const newPhotos = [...photos];
     if (currentUser?.email && photos[index] == null) {
       await uploadFile(
@@ -40,13 +62,12 @@ const UploadPhotos = () => {
       );
       setCurrentInd(index);
       newPhotos[index] = currentImg;
-      console.log(index);
       setPhotos(newPhotos);
     } else return;
   };
 
   useEffect(() => {
-    currentImg != "" &&
+    currentImg !== "" &&
       addSinglePhoto(dispatch, currentImg, currentInd, completeUser);
     setCurrentImg("");
   }, [currentImg, dispatch]);
@@ -54,7 +75,6 @@ const UploadPhotos = () => {
   useEffect(() => {
     const newPhotos = [...photos];
     currentUser?.photosLink.forEach((photo) => {
-      console.log(photo);
       newPhotos[photo.index] = photo.photoLink;
       setPhotos(newPhotos);
     });
@@ -75,28 +95,42 @@ const UploadPhotos = () => {
       deleteSinglePhoto(dispatch, photoToDelete, completeUser);
   }, [photoToDelete]);
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
     // Handle form submission logic here
-    navigate("/home");
-    console.log("Submitted!");
+    if (photos[0] == null) {
+      toast("Add Profile Photo");
+      return;
+    }
+    profileComplete(dispatch, userData, completeUser, navigate);
   };
   useEffect(() => {
-    console.log(photos);
-  }, [photos]);
+    userData;
+  }, [userData]);
 
   return (
     <div
-      className={`fixed top-0 right-0 bottom-0 left-0 z-50 bg-pink-100 bg-opacity-50 ${
+      className={`bg-gray-200 pb-10 min-h-[100vh] ${
         isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-      } flex justify-center items-center transition-opacity duration-500`}
+      } flex justify-center items-center transition-opacity  duration-500 `}
     >
-      <div className="max-w-xl w-full p-4 bg-white mt-10 rounded-lg shadow-md">
-        <h2 className="text-lg font-bold mb-4">
-          Don&apos;t be shy, upload some photos
+      <ImageCropperModal
+        isOpen={isModalOpen}
+        onRequestClose={() => {
+          setIsModalOpen(false);
+        }}
+        imageSrc={currentPhoto}
+        setImageSrc={setCurrentPhoto}
+      />
+      <div className="max-w-xl w-full border p-4 bg-white mt-10 rounded-lg shadow-xl">
+        <h2 className="text-2xl mb-10">
+          {" "}
+          Upload your photos to display on your profile
         </h2>
-        <div className="grid grid-cols-3 gap-4">
+
+        <div className="grid grid-cols-3 gap-4 [&>div]:max-h-96 *:object-cover *:object-center">
           {/* Big box */}
-          <div className="relative col-span-2 row-span-2 aspect-w-4 aspect-h-5 overflow-hidden rounded-lg">
+          <div className="relative col-span-2 row-span-2 aspect-w-4 aspect-h-5 overflow-hidden rounded-sm">
             <input
               type="file"
               accept="image/*"
@@ -117,20 +151,21 @@ const UploadPhotos = () => {
                     className="object-cover w-full h-full rounded-lg"
                   />
                   <button
-                    className="absolute top-0 right-0 p-1 bg-red-500 text-white rounded-full"
+                    className="absolute w-8 h-8 top-0 bg-transparent/30 shadow-sm flex justify-center items-center right-0 p-1 text-white rounded-full"
                     onClick={(e) => handleDeletePhoto(e, 0)}
                   >
-                    X
+                    <RxCross2 />
                   </button>
                 </>
               )}
             </label>
           </div>
+
           {/* Small boxes */}
           {photos.slice(1).map((photo, index) => (
             <div
               key={index + 1}
-              className="relative aspect-w-4 aspect-h-5 overflow-hidden rounded-lg"
+              className="relative aspect-w-4 aspect-h-5 overflow-hidden rounded-sm"
             >
               <input
                 type="file"
@@ -152,10 +187,10 @@ const UploadPhotos = () => {
                       className="object-cover w-full h-full rounded-lg"
                     />
                     <button
-                      className="absolute top-0 right-0 p-1 bg-red-500 text-white rounded-full z-10"
+                      className="absolute w-8 h-8 top-0 bg-transparent/30 shadow-sm flex justify-center items-center right-0 p-1 text-white rounded-full"
                       onClick={(e) => handleDeletePhoto(e, index + 1)}
                     >
-                      X
+                      <RxCross2 />
                     </button>
                   </>
                 )}
@@ -164,11 +199,22 @@ const UploadPhotos = () => {
           ))}
         </div>
         <button
-          onClick={handleSubmit}
-          className="w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 px-4 rounded mt-4"
+          onClick={() => {
+            if (!openUploadPhotos) setCurrentStage(currentStage - 1);
+            else setOpenUploadPhotos(false);
+          }}
+          className="w-full bg-rose-500 hover:bg-rose-600 text-white font-bold py-2 px-4 rounded my-4"
         >
-          Submit
+          {path == "questions" ? "Back" : "Done"}
         </button>
+        {path == "questions" && (
+          <button
+            onClick={(e) => handleSubmit(e)}
+            className="w-full bg-rose-500 hover:bg-rose-600 text-white font-bold py-2 px-4 rounded my-4"
+          >
+            Submit
+          </button>
+        )}
       </div>
     </div>
   );

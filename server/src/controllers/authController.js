@@ -123,14 +123,7 @@ exports.signup = catchAsync(async (req, res, next) => {
   }
 
   console.log(otp);
-
-  //todo: uncomment this=> send email
-  //todo: send mail using arpit api
-  //we need a key value for email
-  // await sendEmail({
-  //     email: newUser.email, subject: "Welcome to Duck! Please verify your email", html: `OTP: ${otp}`
-  // });
-
+  
   res.status(200).json({
     status: "success",
     data: {
